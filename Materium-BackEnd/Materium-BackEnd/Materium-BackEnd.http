@@ -1,0 +1,6 @@
+@Materium_BackEnd_HostAddress = http://localhost:5204
+
+GET {{Materium_BackEnd_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
