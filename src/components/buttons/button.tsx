@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function Button() {
   return (
-    <div className="w-1/5 mt-6 mx-auto p-6 rounded-3xl flex justify-between">
+    <div className="w-1/5 mt-6 mx-auto p-6 rounded-3xl flex justify-between md:w-1/4">
       <Link href="/cadastro">
         <button className="border-2 border-[#A3CAE9] py-4 px-6 rounded-4xl hover:bg-blue-200 cursor-pointer">
           Cadastra-se
