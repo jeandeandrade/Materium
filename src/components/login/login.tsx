@@ -36,14 +36,14 @@ export function Login() {
           <Link href="/dashboard" className="flex flex-col">
             <button
               type="submit"
-              className="bg-linear-to-br from-sky-50 via-sky-100 to-sky-200 p-3 rounded-full text-zinc-500 text-sm font-semibold hover:bg-linear-to-bl hover:from-blue-500 hover:via-sky-200 hover:to-sky-300 hover:cursor-pointer"
+              className="border-2 border-zinc-300 bg-blue-300 p-3 rounded-full text-zinc-600 text-sm tracking-wide font-semibold hover:bg-blue-400 hover:cursor-pointer hover:text-zinc-700"
             >
               Entrar
             </button>
           </Link>
         </form>
 
-        <div className="mt-7 text-sm text-blue-600">
+        <div className="mt-7 text-sm text-blue-500">
           <Link href="/" className="hover:underline">
             ← Voltar
           </Link>
@@ -51,13 +51,13 @@ export function Login() {
 
         <div className="mt-6 text-sm text-gray-600">
           Não possui uma conta?{" "}
-          <Link href="/cadastro" className="text-blue-600 hover:underline">
+          <Link href="/cadastro" className="text-blue-500 hover:underline">
             Cadastre-se
           </Link>
         </div>
 
         <div className="mt-2 text-sm">
-          <Link href="#" className="text-blue-600 hover:underline">
+          <Link href="#" className="text-blue-500 hover:underline">
             Esqueceu sua senha?
           </Link>
         </div>
