@@ -13,21 +13,21 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 const events = [
   {
     id: 1,
-    title: "Lorem ipsum dolor",
+    title: "Workshop: Estratégias de Negociação B2B",
     time: "12:00 PM - 2:00 PM",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description: "Participe e aprenda técnicas para otimizar suas cotações no Materium.",
   },
   {
     id: 2,
-    title: "Lorem ipsum dolor",
+    title: "Live: Como Aproveitar o Melhor da Plataforma",
     time: "12:00 PM - 2:00 PM",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description: "Dicas práticas para fornecedores e empresas.",
   },
   {
     id: 3,
-    title: "Lorem ipsum dolor",
+    title: "Webinar: Gestão de Fornecedores com Dados",
     time: "12:00 PM - 2:00 PM",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description: "Melhore seu processo de avaliação com base em dados reais.",
   },
 ];
 
@@ -38,7 +38,7 @@ const EventCalendar = () => {
     <div className="bg-white p-4 rounded-md">
       <Calendar onChange={onChange} value={value} />
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold my-4">Events</h1>
+        <h1 className="text-xl font-semibold my-4">Eventos</h1>
         <Image src="/moreDark.png" alt="" width={20} height={20} />
       </div>
       <div className="flex flex-col gap-4">
@@ -48,7 +48,7 @@ const EventCalendar = () => {
             key={event.id}
           >
             <div className="flex items-center justify-between">
-              <h1 className="font-semibold text-gray-600">{event.title}</h1>
+              <h1 className="font-semibold text-gray-600 w-2/3">{event.title}</h1>
               <span className="text-gray-300 text-xs">{event.time}</span>
             </div>
             <p className="mt-2 text-gray-400 text-sm">{event.description}</p>
