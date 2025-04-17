@@ -1,7 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 
 export function Login() {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-sky-100 via-orange-100 to-blue-100">
       <div className="bg-white w-full max-w-md rounded-2xl px-8 py-10 shadow-xl text-center">
@@ -27,11 +33,20 @@ export function Login() {
           <label className="text-sm text-zinc-500 font-bold text-left block">
             Senha
           </label>
-          <input
-            type="password"
-            placeholder="**************"
-            className="border-2 border-zinc-200 mt-[-10px] mb-3 rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-200"
-          />
+          <div className="relative">
+            <input
+              type={isPasswordVisible ? "text" : "password"}
+              placeholder="********"
+              className="w-full border-2 border-zinc-200 mt-[-10px] mb-3 rounded-md p-3 pr-10 text-sm focus:outline-none focus:ring-1 focus:ring-blue-200"
+            />
+            <button
+              type="button"
+              onClick={() => setIsPasswordVisible((prev) => !prev)}
+              className="absolute right-3 top-1 text-zinc-400 hover:text-zinc-600 hover:cursor-pointer"
+            >
+              {isPasswordVisible ? <Eye size={20} /> : <EyeOff size={20} />}
+            </button>
+          </div>
 
           <Link href="/dashboard" className="flex flex-col">
             <button

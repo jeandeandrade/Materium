@@ -14,20 +14,20 @@ type Announcement = {
 
 const columns = [
   {
-    header: "Title",
+    header: "Titulo",
     accessor: "title",
   },
   {
-    header: "Class",
+    header: "Classes",
     accessor: "class",
   },
   {
-    header: "Date",
+    header: "Data",
     accessor: "date",
     className: "hidden md:table-cell",
   },
   {
-    header: "Actions",
+    header: "Ações",
     accessor: "action",
   },
 ];
@@ -56,10 +56,9 @@ const AnnouncementListPage = () => {
 
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
-      {/* TOP */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center mb-10 justify-between">
         <h1 className="hidden md:block text-lg font-semibold">
-          All Announcements
+          Todos os anúncios
         </h1>
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
           <TableSearch />
@@ -76,9 +75,7 @@ const AnnouncementListPage = () => {
           </div>
         </div>
       </div>
-      {/* LIST */}
       <Table columns={columns} renderRow={renderRow} data={announcementsData} />
-      {/* PAGINATION */}
       <Pagination />
     </div>
   );

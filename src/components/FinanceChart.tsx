@@ -15,63 +15,63 @@ import {
 const data = [
   {
     name: "Jan",
-    income: 4000,
-    expense: 2400,
+    receitas: 4000,
+    despesas: 2400,
   },
   {
     name: "Feb",
-    income: 3000,
-    expense: 1398,
+    receitas: 3000,
+    despesas: 1398,
   },
   {
     name: "Mar",
-    income: 2000,
-    expense: 9800,
+    receitas: 2000,
+    despesas: 9800,
   },
   {
     name: "Apr",
-    income: 2780,
-    expense: 3908,
+    receitas: 2780,
+    despesas: 3908,
   },
   {
     name: "May",
-    income: 1890,
-    expense: 4800,
+    receitas: 1890,
+    despesas: 4800,
   },
   {
     name: "Jun",
-    income: 2390,
-    expense: 3800,
+    receitas: 2390,
+    despesas: 3800,
   },
   {
     name: "Jul",
-    income: 3490,
-    expense: 4300,
+    receitas: 3490,
+    despesas: 4300,
   },
   {
     name: "Aug",
-    income: 3490,
-    expense: 4300,
+    receitas: 3490,
+    despesas: 4300,
   },
   {
     name: "Sep",
-    income: 3490,
-    expense: 4300,
+    receitas: 3490,
+    despesas: 4300,
   },
   {
     name: "Oct",
-    income: 3490,
-    expense: 4300,
+    receitas: 3490,
+    despesas: 4300,
   },
   {
     name: "Nov",
-    income: 3490,
-    expense: 4300,
+    receitas: 3490,
+    despesas: 4300,
   },
   {
     name: "Dec",
-    income: 3490,
-    expense: 4300,
+    receitas: 3490,
+    despesas: 4300,
   },
 ];
 
@@ -79,7 +79,7 @@ const FinanceChart = () => {
   return (
     <div className="bg-white rounded-xl w-full h-full p-4">
       <div className="flex justify-between items-center">
-        <h1 className="text-lg font-semibold">Finance</h1>
+        <h1 className="text-lg font-semibold">Finanças</h1>
         <Image src="/moreDark.png" alt="" width={20} height={20} />
       </div>
       <ResponsiveContainer width="100%" height="90%">
@@ -111,11 +111,11 @@ const FinanceChart = () => {
           />
           <Line
             type="monotone"
-            dataKey="income"
+            dataKey="receitas"
             stroke="#C3EBFA"
             strokeWidth={5}
           />
-          <Line type="monotone" dataKey="expense" stroke="#CFCEFF" strokeWidth={5}/>
+          <Line type="monotone" dataKey="despesas" stroke="#CFCEFF" strokeWidth={5}/>
         </LineChart>
       </ResponsiveContainer>
     </div>
