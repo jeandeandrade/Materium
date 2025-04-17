@@ -4,12 +4,12 @@ import Image from "next/image";
 export function Header() {
   return (
     <div className="h-auto w-auto mx-auto py-5 flex-col gap-5">
-      <div className="opacity-90 w-auto h-15 flex justify-between items-center m-6 px-4 rounded-full">
+      <div className="w-auto flex justify-between items-center m-6 px-4 rounded-full">
         <ul>
-          <Link href={"/"}><Image src="/logo.png" width={50} height={50} alt="Logo Materium" /></Link>
+          <Link href={"/"}><Image src="/logo.svg" width={300} height={300} alt="Logo Materium" /></Link>
         </ul>
 
-        <ul className="ml-44 bg-zinc-100 opacity-85 flex gap-9 text-center text-zinc-700 font-semibold px-6 py-2 items-center rounded-full">
+        <ul className="bg-zinc-100 opacity-85 flex gap-9 text-center text-zinc-700 font-semibold px-6 py-2 items-center rounded-full">
           <li><Link href="/produtos">Produtos</Link></li>
           <li><Link href="/solucoes">Soluções</Link></li>
           <li><Link href="/precos">Preços</Link></li>
