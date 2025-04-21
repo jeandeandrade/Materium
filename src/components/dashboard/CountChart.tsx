@@ -3,24 +3,23 @@ import Image from "next/image";
 import {
   RadialBarChart,
   RadialBar,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 
 const data = [
   {
     name: "Total",
-    count: 106,
+    count: 200,
     fill: "white",
   },
   {
-    name: "Mulheres",
-    count: 53,
+    name: "Compradores",
+    count: 109,
     fill: "#FAE27C",
   },
   {
-    name: "Homens",
-    count: 53,
+    name: "Fornecedores",
+    count: 91,
     fill: "#C3EBFA",
   },
 ];
@@ -29,7 +28,7 @@ const CountChart = () => {
   return (
     <div className="bg-white rounded-xl w-full h-full p-4">
       <div className="flex justify-between items-center">
-        <h1 className="text-lg font-semibold">Estudantes</h1>
+        <h1 className="text-lg font-semibold">Usuários</h1>
         <Image src="/moreDark.png" alt="" width={20} height={20} />
       </div>
       <div className="relative w-full h-[75%]">
@@ -46,7 +45,7 @@ const CountChart = () => {
           </RadialBarChart>
         </ResponsiveContainer>
         <Image
-          src="/maleFemale.png"
+          src="/company.png"
           alt=""
           width={50}
           height={50}
@@ -56,13 +55,13 @@ const CountChart = () => {
       <div className="flex justify-center gap-16">
         <div className="flex flex-col gap-1">
           <div className="w-5 h-5 bg-lamaSky rounded-full" />
-          <h1 className="font-bold">1,234</h1>
-          <h2 className="text-xs text-gray-300">Homens (55%)</h2>
+          <h1 className="font-bold">109</h1>
+          <h2 className="text-xs text-gray-300">Compradores (54,5%)</h2>
         </div>
         <div className="flex flex-col gap-1">
           <div className="w-5 h-5 bg-lamaYellow rounded-full" />
-          <h1 className="font-bold">1,234</h1>
-          <h2 className="text-xs text-gray-300">Mulheres (45%)</h2>
+          <h1 className="font-bold">91</h1>
+          <h2 className="text-xs text-gray-300">Fornecedores (45,5%)</h2>
         </div>
       </div>
     </div>

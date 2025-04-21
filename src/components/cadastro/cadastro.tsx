@@ -1,12 +1,48 @@
 "use client";
 
 import Link from "next/link";
-import { Eye, EyeOff, ArrowDown } from "lucide-react";
+import { Eye, EyeOff, ArrowDown, UserPlus } from "lucide-react";
 import { useState } from "react";
+import api from "@/services/api";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import BotaoLoading from "@/components/button-request/BotaoLoading";
 
 export function Cadastro() {
   const [isOpen, setIsOpen] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [nome, setNome] = useState("");
+  const [senha, setSenha] = useState("");
+  const [papel, setPapel] = useState("Fornecedor");
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter();
+  const handleCadastro = async () => {
+    setIsLoading(true);
+    try {
+      const response = await api.post("/usuarios/cadastro", {
+        email,
+        nome,
+        senha,
+        papel,
+      });
+
+      console.log("Cadastro realizado:", response.data);
+
+      toast.success("Usuário criado com sucesso!");
+
+      setTimeout(() => {
+        router.push("/login");
+      }, 1500);
+    } catch (error) {
+      console.error("Erro ao criar usuário:", error);
+      toast.error("Erro ao cadastrar. Verifique os dados e tente novamente.");
+      setIsLoading(false);
+    } 
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-sky-100 via-orange-100 to-blue-100">
@@ -31,6 +67,8 @@ export function Cadastro() {
           </label>
           <input
             type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="alexsmith.mobbin@gmail.com"
             className="w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-300"
           />
@@ -44,6 +82,8 @@ export function Cadastro() {
             <input
               type="text"
               placeholder="Will Smith"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
               className="w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-300"
             />
           </div>
@@ -55,6 +95,8 @@ export function Cadastro() {
           </label>
           <input
             type={isPasswordVisible ? "text" : "password"}
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
             placeholder="********"
             className="w-full rounded-md border border-gray-300 px-4 py-2 pr-10 focus:outline-none focus:ring-1 focus:ring-blue-300"
           />
@@ -73,6 +115,8 @@ export function Cadastro() {
           </label>
           <select
             name="papel"
+            value={papel}
+            onChange={(e) => setPapel(e.target.value)}
             onFocus={() => setIsOpen(true)}
             onBlur={() => {
               setTimeout(() => {
@@ -93,14 +137,16 @@ export function Cadastro() {
           />
         </div>
 
-        <Link href="/">
-          <button
-            type="submit"
-            className="w-full border-2 border-zinc-300 bg-blue-300 p-3 rounded-full text-zinc-600 text-sm tracking-wide font-semibold hover:bg-blue-400 hover:cursor-pointer hover:text-zinc-700"
-          >
-            Continuar
-          </button>
-        </Link>
+        <BotaoLoading
+          onClick={handleCadastro}
+          isLoading={isLoading}
+          icon={<UserPlus size={16} />}
+          variant="default"
+          size="lg"
+          loadingText="Cadastrando..."
+        >
+          Cadastrar
+        </BotaoLoading>
 
         <p className="text-xs text-center text-gray-500 mt-6 px-4">
           Ao se inscrever, você reconhece que leu, entendeu e concorda com os
