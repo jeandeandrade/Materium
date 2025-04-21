@@ -4,9 +4,37 @@ import Image from "next/image";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import api from "@/services/api";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import BotaoLoading from "@/components/button-request/BotaoLoading";
 
 export function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const handleLogin = async () => {
+    setIsLoading(true);
+    try {
+      const response = await api.post("/usuarios/login", {
+        email,
+        senha,
+      });
+
+      console.log("Login realizado:", response.data);
+
+      toast.success("Usuário logado com sucesso!");
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+      toast.error("Erro ao fazer login. Verifique os dados e tente novamente.");
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-sky-100 via-orange-100 to-blue-100">
@@ -27,6 +55,8 @@ export function Login() {
           </label>
           <input
             type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="sample.materium@gmail.com"
             className="border-2 border-zinc-200 mt-[-10px] mb-3 rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-200"
           />
@@ -36,6 +66,8 @@ export function Login() {
           <div className="relative">
             <input
               type={isPasswordVisible ? "text" : "password"}
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
               placeholder="********"
               className="w-full border-2 border-zinc-200 mt-[-10px] mb-3 rounded-md p-3 pr-10 text-sm focus:outline-none focus:ring-1 focus:ring-blue-200"
             />
@@ -48,14 +80,16 @@ export function Login() {
             </button>
           </div>
 
-          <Link href="/dashboard" className="flex flex-col">
-            <button
-              type="submit"
-              className="border-2 border-zinc-300 bg-blue-300 p-3 rounded-full text-zinc-600 text-sm tracking-wide font-semibold hover:bg-blue-400 hover:cursor-pointer hover:text-zinc-700"
-            >
-              Entrar
-            </button>
-          </Link>
+          <BotaoLoading
+            type="button"
+            onClick={handleLogin}
+            isLoading={isLoading}
+            variant="default"
+            size="lg"
+            loadingText="Entrando..."
+          >
+            Entrar
+          </BotaoLoading>
         </form>
 
         <div className="mt-7 text-sm text-blue-500">
