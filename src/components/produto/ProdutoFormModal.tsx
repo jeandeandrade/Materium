@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
@@ -9,7 +9,6 @@ const schema = z.object({
   nome: z.string().min(2, "Nome obrigatório"),
   descricao: z.string().min(5, "Descrição obrigatória"),
   precoUnitario: z.string().refine(val => !isNaN(parseFloat(val)), "Preço inválido"),
-  fornecedorId: z.string().refine(val => !isNaN(parseInt(val)), "Fornecedor inválido"),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -19,12 +18,6 @@ interface Produto {
   nome: string;
   descricao: string;
   precoUnitario: number;
-  fornecedorId: number;
-}
-
-interface Fornecedor {
-  id: number;
-  nome: string;
 }
 
 interface Props {
@@ -41,21 +34,13 @@ export default function ProdutoFormModal({ open, onClose, onProdutoCriado }: Pro
     reset,
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
-  const [fornecedores, setFornecedores] = useState<Fornecedor[]>([]);
   const [feedback, setFeedback] = useState<{ success?: string; error?: string }>({});
-
-  useEffect(() => {
-    if (open) {
-      fetch("/api/fornecedores")
-        .then((res) => res.json())
-        .then((data) => setFornecedores(data));
-    }
-  }, [open]);
 
   const onSubmit = async (data: FormData) => {
     setFeedback({});
     try {
       const token = localStorage.getItem("token");
+      const empresaId = localStorage.getItem("empresaId");
 
       const res = await fetch("http://localhost:3001/produtos", {
         method: "POST",
@@ -66,7 +51,7 @@ export default function ProdutoFormModal({ open, onClose, onProdutoCriado }: Pro
         body: JSON.stringify({
           ...data,
           precoUnitario: parseFloat(data.precoUnitario),
-          fornecedorId: parseInt(data.fornecedorId),
+          fornecedorId: parseInt(empresaId!),
         }),
       });
 
@@ -117,21 +102,6 @@ export default function ProdutoFormModal({ open, onClose, onProdutoCriado }: Pro
               />
               {errors.precoUnitario && (
                 <p className="text-red-500 text-sm">{errors.precoUnitario.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium">Fornecedor</label>
-              <select {...register("fornecedorId")} className="w-full border rounded-lg px-3 py-2">
-                <option value="">Selecione</option>
-                {fornecedores.map((f) => (
-                  <option key={f.id} value={f.id}>
-                    {f.nome}
-                  </option>
-                ))}
-              </select>
-              {errors.fornecedorId && (
-                <p className="text-red-500 text-sm">{errors.fornecedorId.message}</p>
               )}
             </div>
 
