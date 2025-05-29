@@ -1,7 +1,8 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "sonner";
+import { Providers } from "./providers";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -19,8 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={poppins.className}>
       <body className="" cz-shortcut-listen="true">
-        {children}
-        <Toaster richColors position="top-center" />
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
