@@ -1,124 +1,136 @@
-import { useState } from "react";
-import { Dialog } from "@headlessui/react";
-import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+"use client";
 
-const schema = z.object({
-  nome: z.string().min(2, "Nome obrigatório"),
-  descricao: z.string().min(5, "Descrição obrigatória"),
-  precoUnitario: z.string().refine(val => !isNaN(parseFloat(val)), "Preço inválido"),
-});
+import { useEffect, useState } from "react";
+import { X } from "lucide-react"; // Ícone para botão de fechar
 
-type FormData = z.infer<typeof schema>;
-
-interface Produto {
-  id: number;
-  nome: string;
-  descricao: string;
-  precoUnitario: number;
-}
-
-interface Props {
-  open: boolean;
+interface ProductFormModalProps {
+  isOpen: boolean;
   onClose: () => void;
-  onProdutoCriado: (produto: Produto) => void;
+  onSubmit: (data: any) => void;
+  initialData?: any;
 }
 
-export default function ProdutoFormModal({ open, onClose, onProdutoCriado }: Props) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
+export default function ProductFormModal({
+  isOpen,
+  onClose,
+  onSubmit,
+  initialData,
+}: ProductFormModalProps) {
+  const [formData, setFormData] = useState({
+    name: "",
+    price: "",
+    description: "",
+    imageUrl: "",
+  });
 
-  const [feedback, setFeedback] = useState<{ success?: string; error?: string }>({});
-
-  const onSubmit = async (data: FormData) => {
-    setFeedback({});
-    try {
-      const token = localStorage.getItem("token");
-      const empresaId = localStorage.getItem("empresaId");
-
-      const res = await fetch("http://localhost:3001/produtos", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          ...data,
-          precoUnitario: parseFloat(data.precoUnitario),
-          fornecedorId: parseInt(empresaId!),
-        }),
-      });
-
-      if (res.status === 401) {
-        setFeedback({ error: "Sessão expirada. Faça login novamente." });
-        return;
-      }
-
-      if (!res.ok) throw new Error("Erro ao criar produto");
-
-      const novoProduto = await res.json();
-      onProdutoCriado(novoProduto);
-      setFeedback({ success: "Produto criado com sucesso!" });
-      reset();
-    } catch {
-      setFeedback({ error: "Ocorreu um erro ao criar o produto." });
+  useEffect(() => {
+    if (initialData) {
+      setFormData(initialData);
+    } else {
+      setFormData({ name: "", price: "", description: "", imageUrl: "" });
     }
+  }, [initialData]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(formData);
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
   return (
-    <Dialog open={open} onClose={onClose} className="relative z-50">
-      <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-      <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-          <Dialog.Title className="text-xl font-bold mb-4">Novo Produto</Dialog.Title>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium">Nome</label>
-              <input {...register("nome")} className="w-full border rounded-lg px-3 py-2" />
-              {errors.nome && <p className="text-red-500 text-sm">{errors.nome.message}</p>}
-            </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+      <div className="bg-white w-full max-w-lg rounded-2xl shadow-xl p-6 relative animate-fadeIn">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+        >
+          <X size={20} />
+        </button>
 
-            <div>
-              <label className="block text-sm font-medium">Descrição</label>
-              <textarea {...register("descricao")} className="w-full border rounded-lg px-3 py-2" />
-              {errors.descricao && (
-                <p className="text-red-500 text-sm">{errors.descricao.message}</p>
-              )}
-            </div>
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          {initialData ? "Editar Produto" : "Novo Produto"}
+        </h2>
 
-            <div>
-              <label className="block text-sm font-medium">Preço Unitário</label>
-              <input
-                type="number"
-                step="0.01"
-                {...register("precoUnitario")}
-                className="w-full border rounded-lg px-3 py-2"
-              />
-              {errors.precoUnitario && (
-                <p className="text-red-500 text-sm">{errors.precoUnitario.message}</p>
-              )}
-            </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Nome do produto
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
 
-            {feedback.success && <p className="text-green-600 text-sm">{feedback.success}</p>}
-            {feedback.error && <p className="text-red-600 text-sm">{feedback.error}</p>}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Preço
+            </label>
+            <input
+              type="text"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
 
-            <div className="flex justify-end">
-              <Button type="button" className="text-gray-600 hover:bg-red-600" onClick={onClose}>
-                Cancelar
-              </Button>
-              <Button type="submit" className="ml-2" disabled={isSubmitting}>
-                {isSubmitting ? "Cadastrando..." : "Cadastrar"}
-              </Button>
-            </div>
-          </form>
-        </Dialog.Panel>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Descrição
+            </label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm resize-none h-24 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              URL da imagem
+            </label>
+            <input
+              type="text"
+              name="imageUrl"
+              value={formData.imageUrl}
+              onChange={handleChange}
+              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div className="flex justify-end gap-2 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 text-sm rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
+            >
+              Salvar
+            </button>
+          </div>
+        </form>
       </div>
-    </Dialog>
+    </div>
   );
 }

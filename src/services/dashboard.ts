@@ -1,6 +1,9 @@
 import axios from 'axios';
+import api from "@/services/api";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+console.log('API', api)
 
 export const fetchDashboardData = async (token: string) => {
   try {
@@ -21,6 +24,7 @@ export const fetchDashboardData = async (token: string) => {
       attendance: attendance.data,
       stats: stats.data
     };
+    
   } catch (error) {
     console.error('Error fetching dashboard data:', error);
     throw error;

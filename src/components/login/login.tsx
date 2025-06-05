@@ -13,19 +13,25 @@ export function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+  const [password, setpassword] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const handleLogin = async () => {
     setIsLoading(true);
     try {
-      const response = await api.post("/usuarios/login", {
+      console.log(email)
+      console.log(password)
+      const response = await api.post("/auth/login", {
         email,
-        senha,
+        password,
       });
 
       console.log("Login realizado:", response.data);
+
+      sessionStorage.setItem("token", response.data.token);
+
+      
 
       toast.success("Usuário logado com sucesso!");
       router.push("/dashboard");
@@ -61,13 +67,13 @@ export function Login() {
             className="border-2 border-zinc-200 mt-[-10px] mb-3 rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-200"
           />
           <label className="text-sm text-zinc-500 font-bold text-left block">
-            Senha
+            password
           </label>
           <div className="relative">
             <input
               type={isPasswordVisible ? "text" : "password"}
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
+              value={password}
+              onChange={(e) => setpassword(e.target.value)}
               placeholder="********"
               className="w-full border-2 border-zinc-200 mt-[-10px] mb-3 rounded-md p-3 pr-10 text-sm focus:outline-none focus:ring-1 focus:ring-blue-200"
             />
@@ -107,7 +113,7 @@ export function Login() {
 
         <div className="mt-2 text-sm">
           <Link href="#" className="text-blue-500 hover:underline">
-            Esqueceu sua senha?
+            Esqueceu sua password?
           </Link>
         </div>
 
